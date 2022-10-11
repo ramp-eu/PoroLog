@@ -64,5 +64,19 @@ sudo chmod +x launch.sh
 
 # Fiware & MQTT broker accompanying files
 
-- [Link](https://www.dropbox.com/s/y0hzoy8x2zk755j/fiware-entities.tar.xz?dl=0): Here you can find a collection of JSON-formatted files that contain the Fiware NGSI types, suitable for logistics applications
-- [Link]()
+- [Commlib-py](https://pypi.org/project/commlib-py/): Robot communication controller, i.e. the software to dispatch information to Fiware broker via MQTT, using Python. This component is commlib-py and is currently open-source
+- [Fiware entities JSON](https://github.com/ortelio/Noos-Open/blob/main/fiware-entities.tar.xz): Here you can find a collection of JSON-formatted files that contain the Fiware NGSI types, suitable for logistics applications
+- [Hoppscotch Fiware-related REST calls](https://github.com/ortelio/Noos-Open/blob/main/hoppscotch_calls.zip): REST collections for invoking and updating all Fiware entities. Hoppscotch is the open-source alternative of Postman, alleviating its restrictions regarding membership
+- [Script](https://github.com/ortelio/Noos-Open/blob/main/fiware_bootstrapping.py): Python script using [REST-ee-Fi](https://github.com/robotics-4-all/fiware-ngsi-api), via which an initial insertion of mock data to the respective Fiware entities is performed, so as for the Hoppscotch calls to operate
+- [Script](https://github.com/ortelio/Noos-Open/blob/main/fiware_parcel_2d_transformation.py): Python script that takes as input a Parcel’s ID and retrieves its x,y coordinates in the absolute coordinate frame (warehouse frame)
+
+# Codin dashboard
+
+Codin is not open-source but it is (and will be) free for use. The dashboards can be exported in JSON formatted files and imported by another user, making the solution easily transferable. 
+
+The Codin dashboard created for supporting Noos-Open can be found in [this link](https://github.com/ortelio/Noos-Open/blob/main/Porolog%20showcasing.json). You can import it in [Codin](https://codin.issel.ee.auth.gr/), declare your deployment's credentials and inspect your robots!
+
+# Robotic components
+
+- [Robot controller (ROS2 node)](): Vassilis here
+- Other algorithms?
