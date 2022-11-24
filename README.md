@@ -1,9 +1,38 @@
-# Noos-Open
-Warehouse automation with modular (or other) robots
+# PoRoLog ROSE-AP
 
-> Blah blah here, regarding the general info of Noos-Open
+[![License: Apache 2.0](https://img.shields.io/github/license/Factobotics/FlexHex-Rose-AP)](https://opensource.org/licenses/Apache-2.0)
+<br/>
 
-# Deployment of Noos-Open cloud infrastructure
+ROSE-AP of the PoRoLog project, offers
+- Easy deployment of the NOOS Open Cloud infrastructure via `docker-compose`, allowing for robot logistics applications
+- Bootstrapping ROS2 software that can be installed in a ROS2-enabled Robot to automatically connect it to the NOOS Open infrastructure
+- [Codin](https://codin.issel.ee.auth.gr) dashboards, via which a Warehouse that uses the NOOS Open infrastructure can inspect its real-time status.
+
+This project is part of [DIH^2](http://www.dih-squared.eu/).
+
+## Contents
+
+-   [Background](#background)
+-   [Installation guide (NOOS-Open)](#noos-open-installation)
+    - [Deployment of NOOS-Open](#deployment-of-noos-open-cloud-infrastructure)
+    - [Prerequisites](#prerequisites)
+    - [Setup](#setup)
+    - [Execution](#execution)
+    - [The Codin dashboard](#codin-dashboard)
+    - [Future work](#future-work)
+-   [Robot(s) setup](#robots-setup)
+    - [Bootstrapping software](#bootstrapping-software)
+    - [Custom robot integration](#custom-robot-integration)
+-   [Step by step tutorial](#step-by-step-tutorial)
+-   [Additional utilities](#fiware--mqtt-broker-accompanying-files)
+
+# Background
+
+---
+
+# NOOS-Open Installation
+
+## Deployment of Noos-Open cloud infrastructure
 
 Noos-Open is supported by a cloud infrastructure, which relies on a [Fiware Orion broker](https://fiware-orion.readthedocs.io/en/master/) and a [Mosquitto MQTT broker](https://mosquitto.org/) instance. In the following image, you may see the overall architecture.
 
@@ -55,14 +84,141 @@ Note: The script must have execution privilages. Run the following command as su
 sudo chmod +x launch.sh
 ```
 
-## To be added
+## Codin dashboard
+
+Codin is not open-source but it is (and will be) free for use. The dashboards can be exported in JSON formatted files and imported by another user, making the solution easily transferable. 
+
+The Codin dashboard created for supporting Noos-Open can be found in [this link](https://github.com/ortelio/Noos-Open/blob/main/Porolog%20showcasing.json). You can import it in [Codin](https://codin.issel.ee.auth.gr/), declare your deployment's credentials and inspect your robots!
+
+## Future work
 - Security on orion context broker via keyrock
 - Mosquitto certificates
 
 [docker_tutorial]: https://docs.docker.com/engine/install/ubuntu/
 [docker_compose_tutorial]: < https://docs.docker.com/compose/install/>
 
-# Fiware & MQTT broker accompanying files
+---
+
+# Robot(s) setup
+
+In order to integrate a robotic platform to the NOOS-Open infrastructure, the robot must be ROS2-enabled, at least supporting the ROS2 Navigation stack. Furthermore, its OS must be unix-based, in order to be able to execute Python v3, as well as the [Commlib-py](https://pypi.org/project/commlib-py/) library, which acts as the communication channel between the Robot and NOOS-Open.
+
+## Bootstrapping software
+
+For easier integration, NOOS-Open provides a bootstrapping ROS2 package that can be easily modified for any ROS2-supporting robot and allow for quick and easy integration with the NOOS-Open infrastructure. This package is located [here]().
+
+The instructions to execute it follow:
+> VASILIS HERE!
+
+## Custom robot integration
+
+In the case where anyone wants to implement their own controllers (or some of them), they can write their own Python ROS2 package and create the following Commlib publishers/subscribers with the following data models:
+
+#### PUBLISHER `/<ORION_API_KEY>/<ROBOT_ID>/attrs/battery`
+```yaml
+{
+    percentage: <Float>
+}
+```
+
+#### PUBLISHER `/<ORION_API_KEY>/<ROBOT_ID>/attrs/image`
+```yaml
+{
+    val: <String> # The base64 encoded image
+}
+```
+
+#### PUBLISHER `/<ORION_API_KEY>/<ROBOT_ID>/attrs/logs`
+```yaml
+{
+    val: <String>
+}
+```
+
+#### PUBLISHER `/<ORION_API_KEY>/<ROBOT_ID>/attrs/state`
+```yaml
+{
+    state: <String>
+}
+```
+
+#### PUBLISHER `/<ORION_API_KEY>/<ROBOT_ID>/attrs/status`
+```yaml
+{
+    status: <String>
+}
+```
+
+#### SUBSCRIBER `/<ORION_API_KEY>/<ROBOT_ID>/attrs/velocities`
+```yaml
+{
+    command: <String> # One of FORWARD, BACKWARD, LEFT, RIGHT, STOP, LIFT, RELEASE
+}
+```
+
+#### PUBLISHER `/<ORION_API_KEY>/<ROBOT_ID>/attrs/status`
+```yaml
+{
+    linear: <Float>,
+    angular: <Float>
+}
+```
+
+#### PUBLISHER `/<ORION_API_KEY>/<ROBOT_ID>/attrs/status`
+```yaml
+{
+    linear: <Float>,
+    angular: <Float>
+}
+```
+
+#### PUBLISHER `/<ORION_API_KEY>/<ROBOT_ID>/attrs/pose`
+```yaml
+{
+    x: <Float>,
+    y: <Float>,
+    theta: <Float>
+}
+```
+
+#### PUBLISHER `/<ORION_API_KEY>/<ROBOT_ID>/attrs/path`
+```yaml
+{
+    path: [
+        {
+            x: <Float>,
+            y: <Float>
+        },
+        ...
+    ]
+}
+```
+
+#### SUBSCRIBER `/<ORION_API_KEY>/<ROBOT_ID>/attrs/target`
+```yaml
+{
+    x: <Float>,
+    y: <Float>
+}
+```
+
+#### SUBSCRIBER `/<ORION_API_KEY>/<ROBOT_ID>/attrs/target/entity`
+```yaml
+{
+    type: <String>, # One of Parcel, Pallet, Slot
+    id: <String>
+}
+```
+
+---
+
+# Step by step tutorial
+
+The step by step tutorial will be uploaded to YouTube and the link will be posted here!
+
+---
+
+# Utilities - Fiware & MQTT broker accompanying files
 
 - [Commlib-py](https://pypi.org/project/commlib-py/): Robot communication controller, i.e. the software to dispatch information to Fiware broker via MQTT, using Python. This component is commlib-py and is currently open-source
 - [Fiware entities JSON](https://github.com/ortelio/Noos-Open/blob/main/fiware-entities.tar.xz): Here you can find a collection of JSON-formatted files that contain the Fiware NGSI types, suitable for logistics applications
@@ -70,13 +226,4 @@ sudo chmod +x launch.sh
 - [Script](https://github.com/ortelio/Noos-Open/blob/main/fiware_bootstrapping.py): Python script using [REST-ee-Fi](https://github.com/robotics-4-all/fiware-ngsi-api), via which an initial insertion of mock data to the respective Fiware entities is performed, so as for the Hoppscotch calls to operate
 - [Script](https://github.com/ortelio/Noos-Open/blob/main/fiware_parcel_2d_transformation.py): Python script that takes as input a Parcel’s ID and retrieves its x,y coordinates in the absolute coordinate frame (warehouse frame)
 
-# Codin dashboard
 
-Codin is not open-source but it is (and will be) free for use. The dashboards can be exported in JSON formatted files and imported by another user, making the solution easily transferable. 
-
-The Codin dashboard created for supporting Noos-Open can be found in [this link](https://github.com/ortelio/Noos-Open/blob/main/Porolog%20showcasing.json). You can import it in [Codin](https://codin.issel.ee.auth.gr/), declare your deployment's credentials and inspect your robots!
-
-# Robotic components
-
-- [Robot controller (ROS2 node)](): Vassilis here
-- Other algorithms?
