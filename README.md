@@ -28,6 +28,8 @@ This project is part of [DIH^2](http://www.dih-squared.eu/).
 
 # Background
 
+Modern warehouses require for modern logistics solutions. PoRoLog aspires to provide a robotics-based solution that can contribute to automate and/or improve day-to-day workload, so that the warehouse improves its efficiency, optimizes storage capacity, and decrease physical work. Specifically, PoRoLog proposes a new reconfigurable and scalable robotic system for pallet and box transfers in existing logistics warehouses and a new open source software for supervision of groups of robots named NOOS-Open. A real size technology transfer experiment in a real warehouse with Industry and Logistics 4.0 in mind will be performed, resulting in hardware and software available for other SMEs on RAMP for easy replication at European level.
+
 ---
 
 # NOOS-Open Installation
