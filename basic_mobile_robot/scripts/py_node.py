@@ -1,3 +1,5 @@
+# Author: Vasileios Mizaridis
+# Date: November 2022
 #!/usr/bin/env python3
 
 import rclpy
@@ -6,7 +8,6 @@ from rclpy.callback_groups import ReentrantCallbackGroup  # Allow callbacks to b
 from rclpy.executors import MultiThreadedExecutor # Runs callbacks in a pool of threads
 
 from rclpy.qos import ReliabilityPolicy, DurabilityPolicy, QoSProfile
-#from basic_mobile_robot.module_to_import import RobotInfo
 
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist, PoseStamped, PoseWithCovarianceStamped
@@ -57,15 +58,16 @@ class RobotInfo(Node):
             debug=True
         )
 
+        # Variable initialization
         self.battery_level = 100
-
         self.robot_state = 'IDLE'
         self.robot_base_frame = robot_base_frame
         self.parcel = 0
         self.dist = 0
         timer_period1 = 5
         timer_period2 = 10
-        #self.logs = self.create_timer(timer_period1, self.timer_callback_logs, callback_group=self.group) #log
+        
+        # Creation of publishers and subscribers
         self.status = self.create_timer(timer_period2, self.timer_callback_status, callback_group=self.group) #status
         self.battery = self.create_timer(timer_period1, self.timer_callback_battery, callback_group=self.group) #battery
         self.state = self.create_timer(timer_period1, self.tele_cb, callback_group=self.group) #state
@@ -110,68 +112,19 @@ class RobotInfo(Node):
         self.image_publisher = node.create_publisher(topic=BASE_TOPIC + "/image")
         self.get_logger().warning("Image publisher READY!")
 
-
         self.pallet_sub = node.create_subscriber(topic=BASE_TOPIC + "/goal/entity" , on_message = self.pallet_cb)
         self.pallet_sub.run()
 
         self.parcel_move_publisher = node.create_publisher(topic="/1234abcd/WarehouseKPI1/attrs/parcelsMoved")
+        self.get_logger().warning(" publisher READY!") 
     
         self.dist_move_publisher = node.create_publisher(topic="/1234abcd/WarehouseKPI1/attrs/distanceXmassMovedByRobots")
 
         self.state_pub.publish({"val" : "IDLE"})
         self.logs_pub.publish({"val": "Robot is idle"})
 
-        # self.cancel_goal_sub = node.create_subscriber(topic=BASE_TOPIC + "/target/cancel", on_message=self.cancel_cb)
-        # self.cancel_goal_sub.run()
 
 ############################################################################
-    #logs
-    # def timer_callback_logs(self):
-    #     self.logs_pub.publish({"val": "I am a log1"})
-    
-    def euler_from_quaternion(self,quaternion):
-        """
-        Converts quaternion (w in last place) to euler roll, pitch, yaw
-        quaternion = [x, y, z, w]
-        Bellow should be replaced when porting for ROS 2 Python tf_conversions is done.
-        """
-        x = quaternion.x
-        y = quaternion.y
-        z = quaternion.z
-        w = quaternion.w
-
-        sinr_cosp = 2 * (w * x + y * z)
-        cosr_cosp = 1 - 2 * (x * x + y * y)
-        roll = np.arctan2(sinr_cosp, cosr_cosp)
-
-        sinp = 2 * (w * y - z * x)
-        pitch = np.arcsin(sinp)
-
-        siny_cosp = 2 * (w * z + x * y)
-        cosy_cosp = 1 - 2 * (y * y + z * z)
-        yaw = np.arctan2(siny_cosp, cosy_cosp)
-
-        return roll, pitch, yaw
-
-    def pallet_cb(self, msg):
-        self.logs_pub.publish({"val": "Robot goes to " + msg["id"] + " of type " + msg["type"]})
-        self.parcel += 1
-        self.dist += 50
-        self.parcel_move_publisher.publish({"val": self.parcel})
-        self.dist_move_publisher.publish({"val": self.dist})
-        self.state_pub.publish({"val" : "NAV"})
-
-        self.go_to = PoseStamped()
-        self.go_to.header.frame_id = "map"
- 
-        self.x_ = 5.1
-        self.y_ = -2.1
-
-        self.go_to.pose.position.x = self.x_
-        self.go_to.pose.position.y = self.y_
-        self.go_to.pose.orientation.w = 1.0
-
-        self.goal_pub.publish(self.go_to)
 
     #status
     def timer_callback_status(self):
@@ -198,6 +151,32 @@ class RobotInfo(Node):
         else:
             self.state_pub.publish({"val" : "IDLE"})
             self.logs_pub.publish({"val": "Robot is idle"})
+    
+    # Function that transfers quaternion to euler. 
+    # To be used in def pose_cb
+    def euler_from_quaternion(self,quaternion):
+        """
+        Converts quaternion (w in last place) to euler roll, pitch, yaw
+        quaternion = [x, y, z, w]
+        Bellow should be replaced when porting for ROS 2 Python tf_conversions is done.
+        """
+        x = quaternion.x
+        y = quaternion.y
+        z = quaternion.z
+        w = quaternion.w
+
+        sinr_cosp = 2 * (w * x + y * z)
+        cosr_cosp = 1 - 2 * (x * x + y * y)
+        roll = np.arctan2(sinr_cosp, cosr_cosp)
+
+        sinp = 2 * (w * y - z * x)
+        pitch = np.arcsin(sinp)
+
+        siny_cosp = 2 * (w * z + x * y)
+        cosy_cosp = 1 - 2 * (y * y + z * z)
+        yaw = np.arctan2(siny_cosp, cosy_cosp)
+
+        return roll, pitch, yaw
     
     #robot pose
     def pose_cb(self,msg):
@@ -271,8 +250,6 @@ class RobotInfo(Node):
         self.go_to = PoseStamped()
         self.go_to.header.frame_id = "map"
     
-        # self.x_ = msg['x'][0]
-        # self.y_ = msg['y'][1]
         self.x_ = msg['x']
         self.y_ = msg['y']
 
@@ -283,15 +260,6 @@ class RobotInfo(Node):
         self.goal_pub.publish(self.go_to)
         self.logs_pub.publish({"val": "Entering navigation mode"})
         self.state_pub.publish({"val" : "NAV"})
-
-    # def cancel_cb(self,msg):
-    #     self.data = str(msg['command'])
-    #     if self.data == "CANCEL":
-    #         self.go_to.pose.position.x = 0.0
-    #         self.go_to.pose.position.y = 0.0
-    #         self.goal_pub.publish(self.go_to)
-
-
 
     def getFiware(ft, fid):
         response = requests.request(
@@ -377,9 +345,30 @@ class RobotInfo(Node):
 
         self.goal_pub.publish(self.get_parcel)        
 
+    # KPI values update
+    def pallet_cb(self, msg):
+        self.logs_pub.publish({"val": "Robot goes to " + msg["id"] + " of type " + msg["type"]})
+        self.parcel += 1
+        self.dist += 50
+        self.parcel_move_publisher.publish({"val": self.parcel})
+        self.dist_move_publisher.publish({"val": self.dist})
+        self.state_pub.publish({"val" : "NAV"})
+
+        self.go_to = PoseStamped()
+        self.go_to.header.frame_id = "map"
+ 
+        self.x_ = 5.1
+        self.y_ = -2.1
+
+        self.go_to.pose.position.x = self.x_
+        self.go_to.pose.position.y = self.y_
+        self.go_to.pose.orientation.w = 1.0
+
+        self.goal_pub.publish(self.go_to)
+        
     # Send robot's image
     def image_cb(self):
-        self.f = open("/home/vas/dev_ws/src/basic_mobile_robot/scripts/warehouse_1.png", "rb")
+        self.f = open("~/dev_ws/src/basic_mobile_robot/scripts/warehouse_1.png", "rb")
         self.fileContent = self.f.read()
         self.byteArr = bytearray(self.fileContent)
         self.image = base64.encodebytes(self.fileContent).decode("utf-8")
