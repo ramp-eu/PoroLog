@@ -204,7 +204,7 @@ In the case where anyone wants to implement their own controllers (or some of th
 }
 ```
 
-#### SUBSCRIBER `/<ORION_API_KEY>/<ROBOT_ID>/attrs/target/entity`
+#### SUBSCRIBER `/<ORION_API_KEY>/<ROBOT_ID>/attrs/goal/entity`
 ```yaml
 {
     type: <String>, # One of Parcel, Pallet, Slot
