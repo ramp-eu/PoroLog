@@ -131,7 +131,7 @@ colcon build
 source ~/ros2_workspace/install/setup.bash
 export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/ros2_workspace/src/basic_mobile_robot/models/
 ```
-4. Open a terminal and run the launch.file
+4. Open a terminal and run the launch.file. Gazebo and RVIZ will open with Navigation2
 ```
 cd ros2_workspace/src/basic_mobile_robot
 
