@@ -107,7 +107,7 @@ In order to integrate a robotic platform to the NOOS-Open infrastructure, the ro
 
 ## Bootstrapping software
 
-For easier integration, NOOS-Open provides a bootstrapping ROS2 package that can be easily modified for any ROS2-supporting robot and allow for quick and easy integration with the NOOS-Open infrastructure. This package is located [here]().
+For easier integration, NOOS-Open provides a bootstrapping ROS2 package that can be easily modified for any ROS2-supporting robot and allow for quick and easy integration with the NOOS-Open infrastructure. This package is located [here](https://github.com/ortelio/Noos-Open/tree/main/basic_mobile_robot).
 
 The instructions to execute it follow:
 > VASILIS HERE!
