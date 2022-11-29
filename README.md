@@ -113,10 +113,37 @@ Below follows the instructions to execute it:
 
 **Prerequisites**
 1. Ubuntu Linux 20.04 
-2. ROS 2 Foxy Fitzroy installed 
-3. Ros 2 workspace
+2. ROS 2 Foxy Fitzroy installed
+3. Gazebo installed
+4. Commlib-py installed 
+5. Ros 2 workspace
 
+**Instructions**
+1. Copy `basic_mobile_robot` folder inside `ros2_workspace/src`
+2. Build the package
+```
+cd ~/ros2_workspace
 
+colcon build
+```
+3. Open ~/.bashrc and add the following lines to the end
+```
+source ~/ros2_workspace/install/setup.bash
+export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/ros2_workspace/src/basic_mobile_robot/models/
+```
+4. Open a terminal and run the launch.file
+```
+cd ros2_workspace/src/basic_mobile_robot
+
+ros2 launch basic_mobile_robot basic_mobile_bot.launch.py 
+```
+5. In another terminal run the script file
+```
+cd ros2_workspace/install/basic_mobile_robot/lib/basic_mobile_robot/
+
+ros2 run basic_mobile_robot py_node.py
+
+```
 
 ## Custom robot integration
 
