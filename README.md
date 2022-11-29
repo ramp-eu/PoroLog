@@ -109,8 +109,14 @@ In order to integrate a robotic platform to the NOOS-Open infrastructure, the ro
 
 For easier integration, NOOS-Open provides a bootstrapping ROS2 package that can be easily modified for any ROS2-supporting robot and allow for quick and easy integration with the NOOS-Open infrastructure. This package is located [here](https://github.com/ortelio/Noos-Open/tree/main/basic_mobile_robot).
 
-The instructions to execute it follow:
-> VASILIS HERE!
+Below follows the instructions to execute it:
+
+**Prerequisites**
+1. Ubuntu Linux 20.04 
+2. ROS 2 Foxy Fitzroy installed 
+3. Ros 2 workspace
+
+
 
 ## Custom robot integration
 
