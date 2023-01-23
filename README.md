@@ -117,7 +117,9 @@ In order for the NOOS open to correctly operate, logistics-specific NGSI data ty
 - **Pallet**: A Pallet can be placed in a Slot
 - **Parcel**: A Parcel can be placed in a Slot or exist in a Pallet
 
+Below, you can see how the Warehouse, Room, Rack, Shelf and Slot entities are geometrically connected.
 
+![image](https://user-images.githubusercontent.com/5663091/214013720-9248f430-4060-4f26-8aa8-31c0af6435d9.png)
 
 ## Warehouse NGSI type
 
