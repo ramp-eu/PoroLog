@@ -225,6 +225,78 @@ Below, you can see how the Warehouse, Room, Rack, Shelf and Slot entities are ge
 
 ## Robot NGSI type
 
+```yaml
+{
+    "device_id": "Robot1",
+    "entity_name": "urn:ngsi-ld:Robot:1",
+    "entity_type": "Robot",
+    "transport": "MQTT",
+    "pose": {
+        "type": "pose",
+        "x": 0.0,
+        "y": 0.0, 
+        "z": 0.0
+    },
+    "path": {
+        "type": "list", 
+        "points": []
+    },
+    "origin": {
+        "x": 50,
+        "y": 50
+    },
+    "target": {
+        "type": "point", 
+        "x": 0.0,
+        "y": 0.0
+    }, 
+    "targetProduct": {
+        "type": "productID", 
+        "val": "Product-001"
+    },
+    "velocities": {
+        "type": "vector2d", 
+        "linear": 0.0,
+        "angular": 0.0
+    },
+    "state": {
+        "type": "enum", 
+        "val": "IDLE"
+    },
+    "power": {
+        "type": "float", 
+        "percentage": 1.0
+    },
+    "heartbeat": {
+        "type": "bool", 
+        "val": true
+    },
+    "logs": {
+        "type": "string", 
+        "val": "I am a default log!"
+    },
+    "image": {
+        "type": "string", 
+        "val": ""
+    },
+    "attributes": [
+        {"object_id": "pose", "name": "pose", "type": "pose"}, 
+        {"object_id": "path", "name": "path", "type": "list"}, 
+        {"object_id": "target", "name": "target", "type": "point"}, 
+        {"object_id": "targetProduct", "name": "targetProduct", "type": "productID"}, 
+        {"object_id": "velocities", "name": "velocities", "type": "vector2d"}, 
+        {"object_id": "state", "name": "state", "type": "enum"},
+        {"object_id": "power", "name": "power", "type": "float"}, 
+        {"object_id": "heartbeat", "name": "heartbeat", "type": "bool"}, 
+        {"object_id": "logs", "name": "logs", "type": "string"},
+        {"object_id": "image", "name": "image", "type": "string"}
+    ], 
+    "static_attributes": [{
+        "name":"refWarehouse", "type": "Relationship", "value": "urn:ngsi-ld:Warehouse:1"
+    }]
+}
+```
+
 ## RobotKPI NGSI type
 
 ```yaml
