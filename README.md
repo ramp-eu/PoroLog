@@ -20,6 +20,7 @@ This project is part of [DIH^2](http://www.dih-squared.eu/).
     - [Execution](#execution)
     - [The Codin dashboard](#codin-dashboard)
     - [Future work](#future-work)
+-   [Fiware NGSI types](#fiware-ngsi-types)
 -   [Robot(s) setup](#robots-setup)
     - [Bootstrapping software](#bootstrapping-software)
     - [Custom robot integration](#custom-robot-integration)
@@ -98,6 +99,375 @@ The Codin dashboard created for supporting Noos-Open can be found in [this link]
 
 [docker_tutorial]: https://docs.docker.com/engine/install/ubuntu/
 [docker_compose_tutorial]: < https://docs.docker.com/compose/install/>
+
+---
+
+# Fiware NGSI types
+
+In order for the NOOS open to correctly operate, logistics-specific NGSI data types have been defined, so as to handle the data storage and retrieval. Specifically we have the following types:
+
+- **Warehouse**: Holds the necessary information of a whole warehouse.
+- **WarehouseKPI**: Includes some Key Performance Indicators (KPIs) for the warehouse, for a single day. It is expected that a different WarehouseKPI instance is created each day.
+- **Robot**: Holds the necessary information about a robot that exists in a Warehouse.
+- **RobotKPI**: Holds the KPIs of a specific Robot.
+- **Room**: A Warehouse consists of Rooms
+- **Rack**: A Room contains Racks
+- **Shelf**: A Rack contains Shelfs
+- **Slot**: A Shelf contains Slots
+- **Pallet**: A Pallet can be placed in a Slot
+- **Parcel**: A Parcel can be placed in a Slot or exist in a Pallet
+
+
+
+## Warehouse NGSI type
+
+```yaml
+{
+    "id": "-",
+    "type": "Warehouse",
+    "name": {
+        "type": "Text",
+        "value": "Bleujour"
+    },
+    "georeference": {
+        "type": "vector",
+        "value": {
+            "longitude": 43.5746458,
+            "lattitude": 1.4514467
+        },
+        "metadata": {
+            "address": {
+                "type": "postalAddress",
+                "value": {
+                    "streetAddress": "37 Av. Jules Julien",
+                    "addressRegion": "Toulouse, France",
+                    "addressLocality": "-",
+                    "postalCode": "31400"
+                }
+            }
+        }
+    },
+    "blueprint": {
+        "type": "string",
+        "value": ""
+    },
+    "dimensions": {
+        "type": "vector",
+        "value": {
+            "width": 100,
+            "height": 50,
+            "resolution": 0.1
+        }
+    },
+    "annotations": {
+        "type": "list",
+        "value": []
+    },
+}
+```
+
+## WarehouseKPI NGSI type
+
+```yaml
+{
+    "id": "-",
+    "type": entity_type,
+    "date": {
+        "type": "Date",
+        "value": {
+            "val": "14/06/2022"
+        }
+    },
+    "palleteStorageDensity": {
+        "type": "number",
+        "value": {
+            "val": 1
+        }
+    },
+    "distanceXmassMovedByRobots": {
+        "type": "number",
+        "value": {
+            "val": 1
+        }
+    },
+    "distanceXmassMovedByOperators": {
+        "type": "number",
+        "value": {
+            "val": 1
+        }
+    },
+    "palletsMoved": {
+        "type": "number",
+        "value": {
+            "val": 1
+        }
+    },
+    "parcelsMoved": {
+        "type": "number",
+        "value": {
+            "val": 1
+        }
+    },
+    "savedTimeshareForOperator": {
+        "type": "number",
+        "value": {
+            "val": 1
+        }
+    },
+    "refWarehouse": {
+        "type": "Relationship",
+        "value": "urn:ngsi-ld:Warehouse:1"
+    }
+}
+```
+
+## Robot NGSI type
+
+## RobotKPI NGSI type
+
+```yaml
+{
+    "id": "-",
+    "type": entity_type,
+    'date': {
+        'type': 'Date',
+        'value': {
+            'val': ''
+        }
+    },
+    'boxedMoved': {
+        'type': 'number',
+        'value': {
+            'val': 0
+        }
+    },
+    'palletesMoved': {
+        'type': 'number',
+        'value': {
+            'val': 0
+        }
+    },
+    'distance': {
+        'type': 'number',
+        'value': {
+            'val': 0
+        }
+    },
+    "refRobot": {
+        "type": "Relationship",
+        "value": "urn:ngsi-ld:Robot:1"
+    }
+}
+```
+
+## Room NGSI type
+
+```yaml
+{
+    "id": "-",
+    "type": entity_type,
+    "floor": {
+        "type": "number",
+        "value": 0
+    },
+    "blueprint": {
+        "type": "string",
+        "value": ""
+    },
+    "dimensions": {
+        "type": "vector",
+        "value": {
+            "width": 20,
+            "height": 20,
+            "z": 4.5,
+            "resolution": 0.1
+        }
+    },
+    "annotations": {
+        "type": "list",
+        "value": []
+    },
+    "groundType": {
+        "type": "string",
+        "value": ""
+    },
+    "origin": {
+        "type": "vector",
+        "value": {
+            "x": 25,
+            "y": 5
+        }
+    },
+    "refWarehouse": {
+        "type": "Relationship",
+        "value": "urn:ngsi-ld:Warehouse:1"
+    }
+}
+```
+
+## Rack NGSI type
+
+```yaml
+{
+    "id": "-",
+    "type": entity_type,
+    "maxPayload": {
+        "type": "number",
+        "value": 300
+    },
+    "dimensions": {
+        "type": "vector",
+        "value": {
+            "length": 10,
+            "width": 1,
+            "height": 4,
+            "orientation": 0.78539
+        }
+    },
+    "origin": {
+        "type": "vector",
+        "value": {
+            "x": 2,
+            "y": 10
+        }
+    },
+    "refRoom": {
+        "type": "Relationship",
+        "value": "urn:ngsi-ld:Room:1"
+    }
+}
+```
+
+## Shelf NGSI type
+
+```yaml
+{
+    "id": "-",
+    "type": entity_type,
+
+    "altitude": {
+        "type": "number",
+        "value": 2.5
+    },
+    "surfaceNature": {
+        "type": "string",
+        "value": ""
+    },
+    "refRack": {
+        "type": "Relationship",
+        "value": "urn:ngsi-ld:Rack:1"
+    }
+}
+```
+
+## Slot NGSI type
+
+```yaml
+{
+    "id": "-",
+    "type": entity_type,
+    "width": {
+        "type": "number",
+        "value": 0.5
+    },
+    "originx": {
+        "type": "number",
+        "value": 4
+    },
+    "refShelf": {
+        "type": "Relationship",
+        "value": "urn:ngsi-ld:Shelf:1"
+    }
+}
+```
+
+## Pallet NGSI type
+
+```yaml
+{
+    "id": "-",
+    "type": entity_type,
+    "dimensions": {
+        "type": "vector",
+        "value": {
+            "length": 0,
+            "width": 0,
+            "height": 0
+        }
+    },
+    "barcode": {
+        "type": "string",
+        "value": {
+            "val": "xxx"
+        }
+    },
+    "material": {
+        "type": "string",
+        "value": ""
+    },
+    "fragile": {
+        "type": "bool",
+        "value": "false"
+    },
+    "refSlot": {
+        "type": "Relationship",
+        "value": "urn:ngsi-ld:Slot:1"
+    }
+}
+```
+
+## Parcel NGSI type
+
+```yaml
+{
+    "id": "-",
+    "type": entity_type,
+    "dimensions": {
+        "type": "vector",
+        "value": {
+            "length": 0.2,
+            "width": 0.2,
+            "height": 0.2
+        }
+    },
+    "sku": {
+        "type": "string",
+        "value": "xxx"
+    },
+    "manufacturer": {
+        "type": "string",
+        "value": ""
+    },
+    "manufDate": {
+        "type": "Date",
+        "value": ""
+    },
+    "content": {
+        "type": "string",
+        "value": ""
+    },
+    "mass": {
+        "type": "number",
+        "value": 1
+    },
+    "price": {
+        "type": "number",
+        "value": 0
+    },
+    "fragile": {
+        "type": "bool",
+        "value": "true"
+    },
+    "itemQuantity": {
+        "type": "number",
+        "value": 10
+    },
+    "refPallet": {
+        "type": "Relationship",
+        "value": "urn:ngsi-ld:Pallet:1"
+    }
+}
+```
 
 ---
 
