@@ -1,4 +1,4 @@
 [submodule "fiware-ngsi-api"]
 	path = fiware-ngsi-api
 	url = https://github.com/robotics-4-all/fiware-ngsi-api
-	branch = main
+
